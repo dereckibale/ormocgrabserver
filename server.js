@@ -33,16 +33,16 @@ app.post('/members', async (req, res) => {
 
 // PATCH /members - Update existing member location
 app.patch('/members', async (req, res) => {
-  const { user_name, latitude, longitude } = req.body;
+  const { username, latitude, longitude } = req.body;
 
-  if (!user_name) {
-    return res.status(400).json({ error: 'user_name is required' });
+  if (!username) {
+    return res.status(400).json({ error: 'username is required' });
   }
 
   try {
     const result = await pool.query(
-      `UPDATE members SET latitude = $1, longitude = $2 WHERE user_name = $3`,
-      [latitude || null, longitude || null, user_name]
+      `UPDATE members SET latitude = $1, longitude = $2 WHERE username = $3`,
+      [latitude || null, longitude || null, username]
     );
 
     if (result.rowCount === 0) {
@@ -64,7 +64,7 @@ app.get('/members', async (req, res) => {
     let params = [];
 
     if (user_name) {
-      query += ' WHERE user_name = $1';
+      query += ' WHERE username = $1';
       params.push(user_name);
     }
 
